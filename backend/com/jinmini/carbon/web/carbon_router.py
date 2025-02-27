@@ -1,13 +1,14 @@
-
 from fastapi import APIRouter
-from com.jinmini.auth.user.user_service import UserService
+from com.jinmini.carbon.service.add_carbon import AddCarbon
+from com.jinmini.carbon.web.carbon_controller import CarbonController
 
 router = APIRouter()
-user_service = UserService()
+add_carbon = AddCarbon()
+controller = CarbonController()
 
-@router.get("/")
-def hello():
-    return user_service.hello()  
+@router.get(path="/")
+async def carbon_user():
+    return controller.carbon_user()
 
 def add_user(slef, user):
     print(f"컨트롤러1➕사용자 추가 : {user}")

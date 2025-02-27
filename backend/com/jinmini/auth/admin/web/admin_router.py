@@ -1,12 +1,14 @@
 from fastapi import APIRouter
-from com.jinmini.auth.admin.admin_service import AdminService
+from com.jinmini.auth.admin.web.admin_controller import AdminController
+from com.jinmini.auth.user.service.add_user import AddUser
 
 router = APIRouter()
-admin_service = AdminService()
+add_user = AddUser()
+controller = AdminController()
 
-@router.get("/")
-def hello():
-    return admin_service.hello()  
+@router.get(path="/")
+async def admin_user():
+    return controller.admin_user()   
 
 def add_user(slef, admin):
     print(f"컨트롤러1➕사용자 추가 : {admin}")
