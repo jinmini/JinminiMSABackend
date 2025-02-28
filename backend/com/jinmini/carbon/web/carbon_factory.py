@@ -5,7 +5,6 @@ strategy_map = {
 }
 
 class CarbonFactory:
-
     @staticmethod
     def create(strategy, **kwargs):
         instance = strategy_map[strategy]
