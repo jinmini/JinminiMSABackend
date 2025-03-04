@@ -1,4 +1,7 @@
+from pydantic import BaseModel
 
-class UserSchema :
-    def __init__(self):
-        pass
+class UserCreate(BaseModel):
+    user_id: str
+    email: str
+    password: str
+    name: str

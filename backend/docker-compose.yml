@@ -1,30 +1,37 @@
 version: "3.8"
 
 services:
-  app:
-    build: .
-    container_name: fastapi-app
-    ports:
-      - "8000:8000"
-    depends_on:
-      - db
-    environment:
-      DATABASE_URL: "postgresql://postgres:password@db:5432/postgres"
-    volumes:
-      - .:/app
-
   db:
-    image: postgres:15
-    container_name: postgres-db
+    image: postgres:latest
+    container_name: database
     restart: always
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: postgres
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypass
+      POSTGRES_DB: mydb
     volumes:
       - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U myuser -d mydb"]
+      interval: 10s
+      retries: 5
+      timeout: 5s
 
+
+  backend:
+    build: .
+    container_name: backend
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: "postgresql://myuser:mypass@db:5432/mydb"
+    volumes:
+      - .:/backend
+    working_dir: /backend
 volumes:
   postgres-data:
