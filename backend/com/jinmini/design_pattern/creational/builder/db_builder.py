@@ -1,68 +1,84 @@
+import asyncpg
 import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
+from dotenv import load_dotenv
+from com.jinmini.design_pattern.creational.singleton.db_singleton import db_singleton
+
 
 # ✅ 1. DatabaseBuilder: SQLAlchemy 엔진 및 세션 빌더
 class DatabaseBuilder:
     def __init__(self):
-        self._database_url = os.getenv("DATABASE_URL", "postgresql://myuser:mypass@database:5432/mydb")
-        self._echo = False
-        self._future = True
-        self._autocommit = False
-        self._autoflush = False
-        self._engine = None
-        self._session_local = None
-        self._base = None
-
-    def set_database_url(self, url: str):
-        self._database_url = url
-        return self
-
-    def set_echo(self, echo: bool):
-        self._echo = echo
-        return self
-
-    def set_future(self, future: bool):
-        self._future = future
-        return self
-
-    def set_autocommit(self, autocommit: bool):
-        self._autocommit = autocommit
-        return self
-
-    def set_autoflush(self, autoflush: bool):
-        self._autoflush = autoflush
-        return self
-
-    def build(self):
-        if not self._database_url:
-            raise ValueError("Database URL must be set before building the database engine.")
+        if not hasattr(db_singleton, "db_url"):
+            raise AttributeError("⚠️ db_singleton 인스턴스에 'db_url' 속성이 존재하지 않습니다.")
         
-        self._engine = create_engine(
-            self._database_url, echo=self._echo, future=self._future
-        )
-        self._session_local = sessionmaker(
-            autocommit=self._autocommit,
-            autoflush=self._autoflush,
-            bind=self._engine
-        )
-        self._base = declarative_base()
+        print(f"✅ Initializing DatabaseBuilder... db_url: {db_singleton.db_url}")  # 디버깅
+
+        self.database_url = db_singleton.db_url
+        self.min_size = 1
+        self.max_size = 10
+        self.timeout = 60
+        self.pool = None
+
+    def pool_size(self, min_size: int = 1, max_size: int = 10):
+        self.min_size = min_size
+        self.max_size = max_size
         return self
 
-    def get_engine(self):
-        return self._engine
+    def set_timeout(self, timeout: int = 60):
+        self.timeout = timeout
+        return self
+
+    async def build(self):
+        if not self.database_url:
+            raise ValueError("⚠️ Database URL must be set before building the database")
+
+        print(f"🚀 Connecting to PostgreSQL: {self.database_url}")  # 디버깅
+
+        self.pool = await asyncpg.create_pool(
+            dsn=self.database_url,
+            min_size=self.min_size,
+            max_size=self.max_size,
+            timeout=self.timeout,
+        )
+        return AsyncDatabase(self.pool)
+
+
+class AsyncDatabase:
+    def __init__(self, pool):
+        self.pool = pool
+
+    async def fetch(self, query: str, *args):
+        async with self.pool.acquire() as connection:
+            return await connection.fetch(query, *args)
+
+    async def execute(self, query: str, *args):
+        async with self.pool.acquire() as connection:
+            return await connection.execute(query, *args)
+
+    async def close(self):
+        await self.pool.close()
+
+
+async def get_db():
     
-    def get_session_local(self):
-        return self._session_local
-    
-    def get_base(self):
-        return self._base
+    global db
+    # .env 파일 강제 로드
+    load_dotenv()
 
-    def get_db(self):
-        db = self._session_local()
-        try:
-            yield db
-        finally:
-            db.close()
+    if not hasattr(db_singleton, "db_url") or not db_singleton.db_url:
+        print("⚠️ db_singleton이 올바르게 초기화되지 않았습니다. 환경 변수를 다시 로드합니다.")
+        db_singleton.db_url = os.getenv("DB_URL")
+        
+        if not db_singleton.db_url:
+            raise AttributeError("❌ 환경 변수를 다시 로드했지만 'db_url'이 설정되지 않았습니다. .env 파일을 확인하세요.")
 
+    print(f"✅ db_singleton 초기화 확인: {db_singleton.db_url}")  # Debug 로그
 
+    builder = DatabaseBuilder()
+    db = await builder.build()
+
+    try:
+        yield db  # ✅ FastAPI의 Depends()에서 사용할 수 있도록 yield로 반환
+    finally:
+        await db.close()
