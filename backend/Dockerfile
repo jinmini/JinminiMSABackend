@@ -1,4 +1,4 @@
-# 1. Python 3.10 기반 이미지 사용
+# 1. Python 3.12 기반 이미지 사용
 FROM python:3.12-slim
 
 # 필수 패키지 설치
