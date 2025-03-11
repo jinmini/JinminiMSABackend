@@ -1,6 +1,8 @@
+from abc import ABC, abstractmethod
+from sqlalchemy.orm import Session
 
-class DeleteService:
+class DeleteCustomerService(ABC):
     
-    def __init__(self):
+    @abstractmethod
+    def delete(self, db: Session, user_id: int):
         pass
-

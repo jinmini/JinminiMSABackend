@@ -1,13 +1,17 @@
 from pydantic import BaseModel, EmailStr
 
-class MemberBase(BaseModel):
+class UserSchema(BaseModel):
     user_id: str
     email: EmailStr
     name: str  
+    password: str
 
-class MemberCreate(MemberBase):
-    password : str
-
-class MemberResponse(MemberBase):
     class Config:
         from_attributes = True
+
+# class MemberCreate(MemberBase):
+#     password : str
+
+# class MemberResponse(MemberBase):
+#     class Config:
+#         from_attributes = True

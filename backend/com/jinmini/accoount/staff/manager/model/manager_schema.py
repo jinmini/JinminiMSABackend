@@ -1,6 +1,6 @@
 
-class ManagerSchema:
+class ManagerSchema(UserSchema):
     
     def __init__(self):
-        pass
+  
 

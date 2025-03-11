@@ -1,6 +1,8 @@
+from abc import ABC, abstractmethod
+from sqlalchemy.orm import Session
 
-class RetrieveService:
+class RetrieveCustomerService(ABC):
     
-    def __init__(self):
+    @abstractmethod
+    async def retrieve(self, db: Session, **kwargs):
         pass
-

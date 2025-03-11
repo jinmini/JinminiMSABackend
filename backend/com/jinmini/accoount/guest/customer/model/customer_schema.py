@@ -1,6 +1,5 @@
+from com.jinmini.accoount.common.user.model.user_schema import UserSchema
 
-class CustomerSchema:
-    
-    def __init__(self):
-        pass
+class CustomerSchema(UserSchema):
+    pass
 

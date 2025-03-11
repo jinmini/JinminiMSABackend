@@ -1,6 +1,9 @@
+from abc import ABC, abstractmethod
+from sqlalchemy.orm import Session
+from com.jinmini.accoount.guest.customer.model.customer_schema import CustomerSchema
 
-class UpdateService:
+class UpdateCustomerService(ABC):
     
-    def __init__(self):
+    @abstractmethod
+    def update(self, db: Session, update_customer: CustomerSchema):
         pass
-

@@ -1,3 +1,3 @@
-SELECT * FROM members;
+SELECT * FROM member;
 
 SELECT user_id, email, name FROM members;
