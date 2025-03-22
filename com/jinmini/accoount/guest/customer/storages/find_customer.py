@@ -1,29 +1,32 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.exc import SQLAlchemyError
-from sqlalchemy import text
+from sqlalchemy import text, select
 from com.jinmini.utils.creational.abstract.abstract_service import AbstractService
+from com.jinmini.accoount.guest.customer.models.customer_entity import CustomerEntity
 
 class GetAllRepository(AbstractService):
 
     async def handle(self, db, **kwargs):
         return await self.retrieve(db, **kwargs)
 
-    async def retrieve(self, db, **kwargs):
+    async def retrieve(self, db: AsyncSession, **kwargs):
         print("💯🌈 GetAllRepository 로 진입함:")
-        query = "SELECT * FROM member"
         try:
-            # AsyncDatabase 클래스의 fetch 메서드 직접 사용
-            records = await db.fetch(query)
-            print("💯🌈 데이터 조회 결과:", records)
+            # SQLAlchemy ORM 쿼리 사용
+            query = select(CustomerEntity)
+            result = await db.execute(query)
+            customer_entities = result.scalars().all()
             
-            # asyncpg의 Record 객체를 딕셔너리로 변환
+            print(f"💯🌈 데이터 조회 결과: {len(customer_entities)}개의 고객 정보")
+            
+            # 엔티티를 응답 형식으로 변환
             customers = [
                 {
-                    "id": record["user_id"],
-                    "email": record["email"],
-                    "name": record["name"]
+                    "user_id": customer.user_id,
+                    "email": customer.email,
+                    "name": customer.name
                 }
-                for record in records
+                for customer in customer_entities
             ]
             
             return customers
@@ -40,21 +43,21 @@ class GetDetailRepository(AbstractService):
             return {"error": "user_id is required"}
         return await self.retrieve(db, user_id)
 
-    async def retrieve(self, db, user_id: str):
+    async def retrieve(self, db: AsyncSession, user_id: str):
         # 상세 조회 로직 구현
-        query = "SELECT * FROM member WHERE user_id = $1"
         try:
-            # AsyncDatabase 클래스의 fetch 메서드 직접 사용
-            records = await db.fetch(query, user_id)
+            # SQLAlchemy ORM 쿼리 사용
+            query = select(CustomerEntity).where(CustomerEntity.user_id == user_id)
+            result = await db.execute(query)
+            customer = result.scalars().first()
             
-            if not records:
+            if not customer:
                 return {"error": "User not found"}
                 
-            record = records[0]
             return {
-                "id": record["user_id"],
-                "email": record["email"],
-                "name": record["name"]
+                "user_id": customer.user_id,
+                "email": customer.email,
+                "name": customer.name
             }
         except Exception as e:
             print("⚠️ 데이터 조회 중 오류 발생:", str(e))

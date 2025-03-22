@@ -1,0 +1,71 @@
+---
+description: 
+globs: *.py
+alwaysApply: false
+---
+## Key principles
+
+- Write clear, technical responses with accurate FastAPI examples.
+- Take full advantage of FastAPI's built-in features, especially FastAPI's built-in support for asynchronous programming, dependency injection, and automatic Swagger UI documentation.
+- Prioritize readability and maintainability and follow the Python Style Guidelines (PEP 8 compliant) to ensure your code is clean, consistent, and maintainable.
+- Use descriptive variable and function names, and follow naming conventions (e.g., functions and variables with lowercase letters and underscores).
+- Structure your project modularly to increase reusability and separate related issues. Organize your endpoints into logical groups using FastAPI's APIRouter for modularity and scalability.
+
+## FastAPI/Python
+
+- Embrace asynchronous programming with `async`/`await` for optimal performance on I/O binding operations.
+- Use function-based views with decorators to define endpoints, and consider class-based dependencies for complex logic
+- Leverage ORMs like SQLAlchemy for database interaction, and avoid raw SQL queries unless necessary for performance
+- Leverage Pydantic models for request and response validation, serialization, and documentation. Define your data schema with Pydantic to ensure type safety and automatic validation for API inputs and outputs.
+- Design RESTful APIs with standard conventions for endpoints, HTTP methods, and status codes.
+- Leverage FastAPI's automatic OpenAPI and Swagger UI documentation generation.
+- Clearly define API input requirements using path, query, body, and other parameter types.
+- Implement user management using OAuth2 and JWT tokens for authentication.
+- Implement middleware to solve various issues such as authentication, logging, and CORS.
+
+## Error handling and validation
+
+- Utilize FastAPI's exception handler to manage application-wide error responses.
+- Implement custom exception classes that extend HTTPException for domain-specific errors.
+- Use Pydantic's validation capabilities for request data validation and type conversion.
+- Create a consistent error response schema using the Pydantic model.
+- Implement appropriate status codes (4xx for client errors and 5xx for server errors) in error responses.
+- Use try exception blocks carefully in your business logic and route handlers.
+
+## Dependencies.
+
+- FastAPI
+- Pydantic (for data validation and serialization)
+- SQLAlchemy (for ORM functionality)
+- Alembic (for database migration)
+- Uvicorn/Hypercorn (ASGI server)
+- PostgreSQL (primary database for production)
+- Redis (for caching and background operations)
+- pytest (for testing)
+
+## FastAPI-specific guidelines
+
+- Modularize your application by configuring endpoints as APIRouter instances.
+- Use Pydantic models for both request and response schemas to ensure type safety and validation.
+- Implement dependency injection for database sessions, authentication, and other shared resources.
+- Utilize FastAPI's background operations for lightweight asynchronous operations.
+- Use tags to logically organize your API documentation in the Swagger UI.
+- Use FastAPI's security utilities to implement proper security with OAuth2, API keys, or JWT tokens.
+- Utilize the built-in test client to perform thorough API testing.
+
+## Optimize performance
+
+- Use asynchronous database operations whenever possible, especially utilizing SQLAlchemy's asynchronous features.
+- Implement an appropriate database indexing strategy for performance-critical queries.
+- Utilize connection pooling for database operations to reduce overhead.
+- Implement a caching strategy for frequently accessed data using Redis or similar systems.
+- Use background jobs or external job queues (Celery, Dramatiq) for long-running jobs.
+- Consider compressing responses for bandwidth optimization.
+- Implement appropriate database query optimization techniques, such as joins and selective fetching.
+
+## Key rules
+
+1. follow FastAPI's approach of explicit over implicit for clear and maintainable code.
+2. Prioritize type hints throughout the codebase to improve IDE support and documentation.
+3. Maintain a clear and logical project structure that separates paths, models, dependencies, and business logic.
+4. Design APIs with versioning in mind to support future evolution without breaking changes.

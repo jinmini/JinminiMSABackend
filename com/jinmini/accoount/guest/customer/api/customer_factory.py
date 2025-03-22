@@ -3,7 +3,7 @@ from com.jinmini.accoount.guest.customer.models.customer_action import CustomerA
 from com.jinmini.accoount.guest.customer.services.create_customer_service import  CreateCustomer
 from com.jinmini.accoount.guest.customer.services.delete_customer_service import DeleteCustomer, RemoveCustomer
 from com.jinmini.accoount.guest.customer.services.find_customer_service import  GetAllCustomer, GetDetailCustomer
-from com.jinmini.accoount.guest.customer.services.get_customer_service import  UpdateCustomer, PatchCustomer
+from com.jinmini.accoount.guest.customer.services.get_customer_service import  UpdateCustomer
 
 class CustomerFactory:
 
@@ -13,7 +13,7 @@ class CustomerFactory:
         CustomerAction.GET_ALL_CUSTOMER: GetAllCustomer(),
         CustomerAction.GET_CUSTOMER_BY_ID: GetDetailCustomer(),
         CustomerAction.UPDATE_CUSTOMER: UpdateCustomer(),
-        CustomerAction.PATCH_CUSTOMER: PatchCustomer(),
+        CustomerAction.PATCH_CUSTOMER: UpdateCustomer(),
         CustomerAction.DELETE_CUSTOMER: DeleteCustomer(),
         CustomerAction.REMOVE_CUSTOMER: RemoveCustomer(),
     }

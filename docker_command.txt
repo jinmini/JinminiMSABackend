@@ -2,3 +2,7 @@
 
 # 로그보기
 docker compose logs --tail=500 -f backend
+
+# 테이블에서 특정 행 삭제
+DELETE FROM member
+WHERE user_id = 'user_id';
