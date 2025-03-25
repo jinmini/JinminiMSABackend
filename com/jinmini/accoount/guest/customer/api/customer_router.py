@@ -1,3 +1,4 @@
+from typing import List
 from pydantic import BaseModel, EmailStr
 from sqlalchemy.ext.asyncio import AsyncSession
 from fastapi import APIRouter, Depends
@@ -8,16 +9,20 @@ from com.jinmini.utils.creational.builder.db_builder import get_db
 router = APIRouter()
 controller = CustomerController()
 
-class CustomerListResponse(BaseModel):
-    """고객 응답 모델"""
-    customer: CustomerSchema
+class CustomerResponse(BaseModel): # 단일 고객 응답 모델
+    user_id: str
+    email: EmailStr
+    name: str
+
+class CustomerListResponse(BaseModel): # 고객 목록 응답 모델
+    customers: List[CustomerResponse]
 
 @router.post(path="/create")
 async def create_customer(new_customer: CustomerSchema, db: AsyncSession = Depends(get_db)):
     print("🔎🔎🖥️고객 생성")
     return await controller.create_customer(db=db, new_customer=new_customer)
 
-@router.get(path="/detail", response_model=CustomerListResponse)
+@router.get(path="/detail")
 async def get_customer_detail(user_id: str, db: AsyncSession = Depends(get_db)):
     return await controller.get_customer_by_id(db=db, user_id=user_id)
 

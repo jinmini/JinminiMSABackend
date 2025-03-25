@@ -1,8 +1,10 @@
+from com.jinmini.accoount.guest.customer.models.customer_schema import CustomerSchema
 from com.jinmini.accoount.common.user.model.user_entity import UserEntity
+from typing import Dict, Any
 
 class CustomerEntity(UserEntity):
     
-    def to_response(self):
+    def to_response(self) -> Dict[str, Any]:
         
         return {
             "user_id": self.user_id,
@@ -11,7 +13,7 @@ class CustomerEntity(UserEntity):
         }
     
     @classmethod
-    def from_schema(cls, schema):
+    def from_schema(cls, schema: CustomerSchema):
         
         return cls(
             user_id=schema.user_id,

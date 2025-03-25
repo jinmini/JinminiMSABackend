@@ -1,4 +1,9 @@
+from pydantic import BaseModel
+from typing import Optional
 
-class AuthSchema:
-    pass
+class AuthSchema(BaseModel):
+    success: bool
+    message: str
+    token: Optional[str] = None
+    user_id: Optional[str] = None
 

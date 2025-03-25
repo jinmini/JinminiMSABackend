@@ -12,6 +12,3 @@ class CustomerAction(Enum):
     UPDATE_CUSTOMER = "update_customer" # 고객 정보 전체 수정
     PATCH_CUSTOMER = "patch_customer" # 고객 정보 일부 수정
     CHANGE_PASSWORD = "change_password" # 비밀번호 변경
-
-   
-
