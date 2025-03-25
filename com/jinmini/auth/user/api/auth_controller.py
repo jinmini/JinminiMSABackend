@@ -6,7 +6,7 @@ from com.jinmini.accoount.guest.customer.api.customer_controller import Customer
 class AuthController:
     """인증 관련 비즈니스 로직을 처리하는 컨트롤러"""
     
-    async def login(self, db: AsyncSession, user_id: str, password: str) -> Dict[str, Any]:
+    async def signin(self, db: AsyncSession, user_id: str, password: str) -> Dict[str, Any]:
  
         # 임시로 기존 컨트롤러 사용
         customer_controller = CustomerController()

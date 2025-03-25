@@ -32,10 +32,10 @@ class SignupRequest(BaseModel):
     email: EmailStr
     password: str
 
-@router.post("/login", response_model=LoginResponse)
-async def login(login_request: LoginRequest, db: AsyncSession = Depends(get_db)):
+@router.post("/signin", response_model=LoginResponse)
+async def signin(login_request: LoginRequest, db: AsyncSession = Depends(get_db)):
     """로그인 처리"""
-    result = await controller.login(
+    result = await controller.signin(
         db=db, 
         user_id=login_request.user_id, 
         password=login_request.password

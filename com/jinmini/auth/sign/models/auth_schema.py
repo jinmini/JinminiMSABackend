@@ -1,0 +1,4 @@
+
+class AuthSchema:
+    pass
+

@@ -1,21 +1,15 @@
-from typing import Literal
-from com.jinmini.accoount.guest.customer.models.customer_action import CustomerAction
-from com.jinmini.accoount.guest.customer.services.create_customer_service import  CreateCustomer
-from com.jinmini.accoount.guest.customer.services.delete_customer_service import DeleteCustomer, RemoveCustomer
-from com.jinmini.accoount.guest.customer.services.find_customer_service import  GetAllCustomer, GetDetailCustomer
-from com.jinmini.accoount.guest.customer.services.get_customer_service import  UpdateCustomer
+from backend.com.jinmini.accoount.guest.customer.models.customer_action import CustomerAction
+from backend.com.jinmini.accoount.guest.customer.services.customer_mutation import CreateCustomer
+
 
 class CustomerFactory:
 
     strategy_map = {
         CustomerAction.CREATE_CUSTOMER: CreateCustomer(),
-        CustomerAction.FIND_CUSTOMER: GetAllCustomer(),
-        CustomerAction.GET_ALL_CUSTOMER: GetAllCustomer(),
         CustomerAction.GET_CUSTOMER_BY_ID: GetDetailCustomer(),
+        CustomerAction.GET_CUSTOMERS: GetAllCustomer(),
         CustomerAction.UPDATE_CUSTOMER: UpdateCustomer(),
-        CustomerAction.PATCH_CUSTOMER: UpdateCustomer(),
         CustomerAction.DELETE_CUSTOMER: DeleteCustomer(),
-        CustomerAction.REMOVE_CUSTOMER: RemoveCustomer(),
     }
 
     @staticmethod
