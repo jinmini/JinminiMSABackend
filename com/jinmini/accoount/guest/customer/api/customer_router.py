@@ -18,7 +18,7 @@ class CustomerListResponse(BaseModel): # 고객 목록 응답 모델
     customers: List[CustomerResponse]
 
 @router.post(path="/create")
-async def create_customer(new_customer: CustomerSchema, db: AsyncSession = Depends(get_db)):
+async def create_customer(new_customer: CustomerSchema, db: AsyncSession = Depends(get_db)): #Depends는 의존성 주입을 위한 함수
     print("🔎🔎🖥️고객 생성")
     return await controller.create_customer(db=db, new_customer=new_customer)
 

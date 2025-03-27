@@ -6,8 +6,8 @@ class AuthController:
     def __init__(self):
         pass
 
-    async def signin(self, user_schema, db):
-        return await AuthFactory.create(AuthAction.SIGN_IN, user_schema=user_schema, db=db)
+    async def signin(self, login_schema, db):
+        return await AuthFactory.create(AuthAction.SIGN_IN, login_schema=login_schema, db=db)
 
     async def signout(self, user_schema, db):
         return await AuthFactory.create(AuthAction.SIGN_OUT, user_schema=user_schema, db=db)

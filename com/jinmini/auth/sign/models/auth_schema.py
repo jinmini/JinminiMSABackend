@@ -7,3 +7,8 @@ class AuthSchema(BaseModel):
     token: Optional[str] = None
     user_id: Optional[str] = None
 
+
+class LoginSchema(BaseModel):
+    email: str
+    password: str
+
