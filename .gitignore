@@ -1,5 +1,8 @@
 .cursorrules
 
+.cursor/
+**/.cursor/
+
 .specstory/
 
 .venv/
@@ -7,4 +10,14 @@
 .env
 
 .env.local
+
+#docker
+**/docker_command.txt
+**/docker-compose.yml
+**/Dockerfile
+
+# JWT
+*/jwt
+*.key
+*.pem
 
